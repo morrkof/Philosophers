@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_one.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ppipes <student.21-school.ru>              +#+  +:+       +#+        */
+/*   By: ppipes <ppipes@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:11:29 by ppipes            #+#    #+#             */
-/*   Updated: 2021/03/30 18:49:34 by ppipes           ###   ########.fr       */
+/*   Updated: 2021/03/31 00:26:16 by ppipes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct s_philo
 {
     pthread_t   thread;
     int         number;
-    int         date_eating;
+    int         last_eating;
 }               t_philo;
 
 #include "philo_one.h"
@@ -32,6 +32,7 @@ typedef struct s_philo
 
 void parser(t_param *param, char **argv)
 {
+	// заменить атои на самописный!
     param->number = atoi(argv[1]);
     param->ttDie = atoi(argv[2]);
     param->ttEat = atoi(argv[3]);
@@ -49,7 +50,6 @@ long long get_time(void)
     struct timeval time;
     gettimeofday(&time, NULL);
     long long milisec = (time.tv_sec * 1000) + (time.tv_usec / 1000);
-    // printf("second = %ld\nmicrosecond = %d\nmilisecond = %lld", time.tv_sec, time.tv_usec, milisec);
     return milisec;
 }
 

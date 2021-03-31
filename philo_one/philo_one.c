@@ -3,31 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   philo_one.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ppipes <ppipes@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: ppipes <student.21-school.ru>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:11:29 by ppipes            #+#    #+#             */
-/*   Updated: 2021/03/31 00:26:16 by ppipes           ###   ########.fr       */
+/*   Updated: 2021/03/31 20:00:15 by ppipes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-typedef struct s_param
-{
-    int         number;
-    int         ttDie;
-    int         ttEat;
-    int         ttSleep;
-    int         cycles;
-}               t_param;
 
-typedef struct s_philo
-{
-    pthread_t   thread;
-    int         number;
-    int         last_eating;
-}               t_philo;
 
 #include "philo_one.h"
-
 
 
 void parser(t_param *param, char **argv)
@@ -53,17 +38,52 @@ long long get_time(void)
     return milisec;
 }
 
+void start_simulation(t_philo **philo, int num)
+{
+    int i = 0;
+    while(i < num)
+    {
+       pthread_create(&(philo[i]->thread), NULL, eating, &philo);
+       i++;
+    }
+}
 
 void eating(t_philo *philo)
 {
     long long time = get_time();
-
+    philo->last_eating = time;
+    printf("%lld   %d   is eating\n", time - philo->start_sim, philo->number);
+    usleep(200 * 1000);
+    sleeping(philo);
+ 
 }
-void sleeping(t_philo *philo);
-void thinking(t_philo *philo);
+void sleeping(t_philo *philo)
+{
+    long long time = get_time();
+    printf("%lld   %d   is sleeping\n", time - philo->start_sim, philo->number);
+    usleep(200 * 1000);
+    thinking(philo);
+}
+void thinking(t_philo *philo)
+{
+    long long time = get_time();
+    printf("%lld   %d   is eating\n", time - philo->start_sim, philo->number);
+    usleep(200 * 1000);
+    eating(philo);
+}
 
 
-
+void philo_init(t_philo **philo, int num)
+{
+    int i = 0;
+    while(i < num)
+    {
+        philo[i]->number = i;
+        philo[i]->start_sim = get_time();
+        philo[i]->last_eating = philo[i]->start_sim;
+        i++;
+    }
+}
 
 int main(int argc, char **argv)
 {
@@ -75,8 +95,9 @@ int main(int argc, char **argv)
         return (1);
     }
     parser(&param, argv);
-    get_time(); //  где-то запомнить - это время старта симуляции
-    t_philo philo[param.number]; 
+    t_philo philo[param.number]; // join structures!!!
+    philo_init(&philo, param.number);
+    start_simulation(&philo, param.number);
     // TO DO: заполнить массив философов - время последнего поеда(на старте это время старта симуляции)
     // два указателя на мьютексы-вилки + инициализировать их
     // создание тредов и они будут стартовать в бесконечном цикле еды/спанья/думанья

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_one.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ppipes <student.21-school.ru>              +#+  +:+       +#+        */
+/*   By: ppipes <ppipes@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:12:00 by ppipes            #+#    #+#             */
-/*   Updated: 2021/03/31 19:59:16 by ppipes           ###   ########.fr       */
+/*   Updated: 2021/03/31 23:52:37 by ppipes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ typedef struct s_philo
 
 void parser(t_param *param, char **argv);
 long long get_time(void);
-void start_simulation(t_philo **philo, int num);
-void eating(t_philo *philo);
+void start_simulation(t_philo *philo, int num);
+void *eating(void *tmp);
 void sleeping(t_philo *philo);
 void thinking(t_philo *philo);
-void philo_init(t_philo **philo, int num);
+void philo_init(t_philo *philo, int num);
 
 #endif

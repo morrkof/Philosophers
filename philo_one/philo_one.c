@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_one.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ppipes <ppipes@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: ppipes <student.21-school.ru>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:11:29 by ppipes            #+#    #+#             */
-/*   Updated: 2021/04/01 00:06:05 by ppipes           ###   ########.fr       */
+/*   Updated: 2021/04/01 18:53:03 by ppipes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void start_simulation(t_philo *philo, int num)
        pthread_create(&(philo[i].thread), NULL, eating, (void *)&philo[i]);
        i++;
     }
+    // бесконечный цикл в основном потоке на проверку на смерть (каждого по очереди)
 }
 
 void *eating(void *tmp)
@@ -53,7 +54,7 @@ void *eating(void *tmp)
 	t_philo *philo = (t_philo *)tmp;
     long long time = get_time();
     philo->last_eating = time;
-    printf("%lld   %d   is eating\n", time - philo->start_sim, philo->number);
+    printf("%lld   %d   is eating\n", time - philo->start_sim, philo->number + 1);
     usleep(200 * 1000);
     sleeping(philo);
 	return NULL;
@@ -62,27 +63,32 @@ void *eating(void *tmp)
 void sleeping(t_philo *philo)
 {
     long long time = get_time();
-    printf("%lld   %d   is sleeping\n", time - philo->start_sim, philo->number);
+    printf("%lld   %d   is sleeping\n", time - philo->start_sim, philo->number + 1);
     usleep(200 * 1000);
     thinking(philo);
 }
 void thinking(t_philo *philo)
 {
     long long time = get_time();
-    printf("%lld   %d   is thinking\n", time - philo->start_sim, philo->number);
+    printf("%lld   %d   is thinking\n", time - philo->start_sim, philo->number + 1);
     usleep(200 * 1000);
     eating(philo);
 }
 
 
-void philo_init(t_philo *philo, int num)
+void philo_init(t_philo *philo, t_param param)
 {
+    // добавить вилки и раздать философам!
     int i = 0;
-    while(i < num)
+    while(i < param.number)
     {
         philo[i].number = i;
         philo[i].start_sim = get_time();
         philo[i].last_eating = philo[i].start_sim;
+        philo[i].ttDie = param.ttDie;
+        philo[i].ttEat = param.ttEat;
+        philo[i].ttSleep = param.ttSleep;
+        philo[i].cycles = param.cycles;
         i++;
     }
 }
@@ -97,9 +103,9 @@ int main(int argc, char **argv)
         return (1);
     }
     parser(&param, argv);
-    t_philo philo[param.number]; // join structures!!!
-    philo_init(philo, param.number);
-	printf("%d %d %d %d\n", philo[0].number, philo[1].number, philo[2].number, philo[3].number);
+    t_philo philo[param.number];
+    philo_init(philo, param);
+	// printf("%d %d %d %d\n", philo[0].number, philo[1].number, philo[2].number, philo[3].number);
    	start_simulation(philo, param.number);
 	while (1)
 		usleep(200);
@@ -107,6 +113,7 @@ int main(int argc, char **argv)
     // два указателя на мьютексы-вилки + инициализировать их
     // создание тредов и они будут стартовать в бесконечном цикле еды/спанья/думанья
     // там же бесконечный цикл проверки не умер ли кто
+    // + мьютекс на печать, в случае смерти блок печати, очистка памяти и выход
 
     return (0);
 }

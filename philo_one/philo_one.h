@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_one.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ppipes <student.21-school.ru>              +#+  +:+       +#+        */
+/*   By: ppipes <ppipes@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:12:00 by ppipes            #+#    #+#             */
-/*   Updated: 2021/04/01 19:00:51 by ppipes           ###   ########.fr       */
+/*   Updated: 2021/04/04 03:52:41 by ppipes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <string.h>
+# include <limits.h>
 # include <sys/time.h>
 
 typedef struct s_param
@@ -27,28 +28,32 @@ typedef struct s_param
     int         ttEat;
     int         ttSleep;
     int         cycles;
+	long long		start_sim;
+	pthread_mutex_t	block_print;
 }               t_param;
 
 typedef struct s_philo
 {
-    pthread_t   thread;
-    pthread_mutex_t left_fork;
-    pthread_mutex_t right_fork;
-    long long   last_eating;
-    long long   start_sim;
-    int         number;
-    int         ttDie;
-    int         ttEat;
-    int         ttSleep;
-    int         cycles;
+	t_param			*param;
+    pthread_mutex_t	*left_fork;
+    pthread_mutex_t	*right_fork;
+    long long		last_eating;
+    // long long		start_sim;
+	int				index;
 }               t_philo;
 
 void parser(t_param *param, char **argv);
 long long get_time(void);
-void start_simulation(t_philo *philo, int num);
+void start_simulation(t_philo *philo);
 void *eating(void *tmp);
-void sleeping(t_philo *philo);
-void thinking(t_philo *philo);
-void philo_init(t_philo *philo, t_param param);
+void sleeping_thinking(t_philo *philo);
+void philo_init(t_philo *philo, pthread_mutex_t *forks, t_param *param);
+int			ft_atoi(const char *nptr);
+void		ft_putnbr_fd(int n, int fd);
+int		ft_isdigit(int c);
+void	ft_putstr_fd(char *s, int fd);
+size_t	ft_strlen(const char *s);
+void	ft_putchar_fd(char c, int fd);
+void print_msg(int time, int index, char *msg, pthread_mutex_t	*block_print);
 
 #endif

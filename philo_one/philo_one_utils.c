@@ -6,7 +6,7 @@
 /*   By: ppipes <ppipes@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/04 01:49:29 by ppipes            #+#    #+#             */
-/*   Updated: 2021/04/05 15:04:56 by ppipes           ###   ########.fr       */
+/*   Updated: 2021/04/05 15:17:25 by ppipes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ void		parser(t_param *param, char **argv)
 		param->cycles = ft_atoi(argv[5]);
 	else
 		param->cycles = -1;
+	if (param->number < 2 || param->number > 200 || param->ttdie < 1
+	|| param->tteat < 1 || param->ttsleep < 1)
+		exit(1);
 }
 
 void		print_msg(t_philo *philo, char *msg)

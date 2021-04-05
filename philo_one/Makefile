@@ -6,12 +6,12 @@
 #    By: ppipes <ppipes@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/03 16:22:35 by ppipes            #+#    #+#              #
-#    Updated: 2021/04/05 14:46:58 by ppipes           ###   ########.fr        #
+#    Updated: 2021/04/05 18:27:33 by ppipes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo_one
-SRC = philo_one.c philo_one_utils.c libft.c
+SRC = philo_one.c philo_one_utils.c philo_libft.c
 HEADER = ./philo_one.h
 OBJ = $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror 

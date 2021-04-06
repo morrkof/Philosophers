@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
+/*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ppipes <ppipes@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:12:00 by ppipes            #+#    #+#             */
-/*   Updated: 2021/04/06 13:40:34 by ppipes           ###   ########.fr       */
+/*   Updated: 2021/04/06 13:41:27 by ppipes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef PHILO_TWO_H
+# define PHILO_TWO_H
 
 # include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <semaphore.h>
+# include <fcntl.h>
 
 typedef struct		s_param
 {
@@ -26,15 +28,15 @@ typedef struct		s_param
 	int				ttsleep;
 	int				cycles;
 	long long		start_sim;
-	pthread_mutex_t	block_print;
+	sem_t			*forks;
+	sem_t			*waiter;
+	sem_t			*block_print;
+	sem_t			*block_dying;
 }					t_param;
 
 typedef struct		s_philo
 {
 	t_param			*param;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	block_dying;
 	long long		last_eating;
 	int				index;
 	int				eat_count;

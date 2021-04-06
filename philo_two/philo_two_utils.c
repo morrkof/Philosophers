@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one_utils.c                                  :+:      :+:    :+:   */
+/*   philo_two_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ppipes <ppipes@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/04 01:49:29 by ppipes            #+#    #+#             */
-/*   Updated: 2021/04/05 20:19:24 by ppipes           ###   ########.fr       */
+/*   Updated: 2021/04/06 13:42:18 by ppipes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 void		parser(t_param *param, char **argv)
 {
@@ -29,7 +29,7 @@ void		parser(t_param *param, char **argv)
 
 void		print_msg(t_philo *philo, char *msg)
 {
-	pthread_mutex_lock(&philo->param->block_print);
+	sem_wait(philo->param->block_print);
 	if (!ft_strcmp(msg, "cycles ended"))
 	{
 		ft_putnbr(philo->param->cycles);
@@ -46,7 +46,7 @@ void		print_msg(t_philo *philo, char *msg)
 	write(1, "\n", 1);
 	if (!ft_strcmp(msg, "died"))
 		exit(0);
-	pthread_mutex_unlock(&philo->param->block_print);
+	sem_post(philo->param->block_print);
 }
 
 long long	get_time(void)

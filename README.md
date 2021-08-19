@@ -10,3 +10,5 @@ as example `./philo_one 5 800 200 200`
 1. philo_one: Philosophers are threads, forks are mutexes
 2. philo_two: Philosophers are threads, forks are semaphor
 3. philo_three: Philosophers are processes, forks are semaphor
+
+![](https://i.imgur.com/oDoBJRz.png)
